@@ -11,3 +11,15 @@ export type Contract = {
   monthlyRent: number;
   deposit: number;
 };
+
+// Thêm một số utility type cho việc quản lý hợp đồng
+export type ContractFilter = {
+  status?: ContractStatus;
+  searchQuery?: string;
+};
+
+// Thêm type cho các action với hợp đồng
+export type ContractAction = {
+  type: "renew" | "terminate" | "print" | "view";
+  contract: Contract;
+};

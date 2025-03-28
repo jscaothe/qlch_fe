@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,22 +8,29 @@ import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/co
 import ContractDetail from "./ContractDetail";
 import { Contract, ContractStatus } from "@/types/contracts";
 
+// Constants for status display mapping
+const STATUS_DISPLAY = {
+  active: { text: "Đang hiệu lực", className: "bg-emerald-100 text-emerald-800" },
+  expired: { text: "Đã hết hạn", className: "bg-rose-100 text-rose-800" },
+  pending: { text: "Chờ ký kết", className: "bg-amber-100 text-amber-800" },
+};
+
 type ContractCardProps = {
   contract: Contract;
 };
 
 const ContractCard = ({ contract }: ContractCardProps) => {
   const getStatusBadge = (status: ContractStatus) => {
-    switch (status) {
-      case "active":
-        return <Badge className="bg-emerald-100 text-emerald-800">Đang hiệu lực</Badge>;
-      case "expired":
-        return <Badge className="bg-rose-100 text-rose-800">Đã hết hạn</Badge>;
-      case "pending":
-        return <Badge className="bg-amber-100 text-amber-800">Chờ ký kết</Badge>;
-      default:
-        return <Badge className="bg-gray-100 text-gray-800">Không xác định</Badge>;
-    }
+    const statusConfig = STATUS_DISPLAY[status] || { 
+      text: "Không xác định", 
+      className: "bg-gray-100 text-gray-800" 
+    };
+    
+    return (
+      <Badge className={statusConfig.className}>
+        {statusConfig.text}
+      </Badge>
+    );
   };
 
   return (
@@ -56,7 +64,11 @@ const ContractCard = ({ contract }: ContractCardProps) => {
       <CardFooter className="flex justify-between px-4 py-3 bg-muted/30">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" size="sm">
+            <Button 
+              variant="outline" 
+              size="sm"
+              aria-label="Xem chi tiết hợp đồng"
+            >
               Xem chi tiết
             </Button>
           </SheetTrigger>

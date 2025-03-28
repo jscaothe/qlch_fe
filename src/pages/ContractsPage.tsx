@@ -1,9 +1,10 @@
+
 import { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { FileText, Plus, Search, Filter, CalendarCheck, FileCheck, FileX } from "lucide-react";
+import { FileText, Plus, Search, FileCheck, FileX } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { 
   Table, 
   TableBody, 
@@ -12,80 +13,66 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import ContractCard from "@/components/contracts/ContractCard";
 import ContractForm from "@/components/contracts/ContractForm";
+import ContractStatsCard from "@/components/contracts/ContractStatsCard";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Contract, ContractStatus } from "@/types/contracts";
+import { getStatusBadge, filterContracts } from "@/utils/contractUtils";
+
+// Mock data
+const MOCK_CONTRACTS: Contract[] = [
+  {
+    id: "CTR-001",
+    tenantName: "Nguyễn Văn A",
+    roomNumber: "101",
+    startDate: "01/05/2023",
+    endDate: "01/05/2024",
+    status: "active",
+    monthlyRent: 4500000,
+    deposit: 9000000
+  },
+  {
+    id: "CTR-002",
+    tenantName: "Trần Thị B",
+    roomNumber: "102",
+    startDate: "15/06/2023",
+    endDate: "15/06/2024",
+    status: "active",
+    monthlyRent: 5000000,
+    deposit: 10000000
+  },
+  {
+    id: "CTR-003",
+    tenantName: "Lê Văn C",
+    roomNumber: "103",
+    startDate: "10/01/2023",
+    endDate: "10/01/2024",
+    status: "expired",
+    monthlyRent: 4800000,
+    deposit: 9600000
+  },
+  {
+    id: "CTR-004",
+    tenantName: "Phạm Thị D",
+    roomNumber: "201",
+    startDate: "20/07/2023",
+    endDate: "20/07/2024",
+    status: "active",
+    monthlyRent: 5200000,
+    deposit: 10400000
+  },
+];
 
 const ContractsPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<"all" | "active" | "expired">("all");
   const { toast } = useToast();
+  const [contracts, setContracts] = useState<Contract[]>(MOCK_CONTRACTS);
 
-  // Dữ liệu giả lập cho hợp đồng - đảm bảo status có kiểu ContractStatus
-  const contracts: Contract[] = [
-    {
-      id: "CTR-001",
-      tenantName: "Nguyễn Văn A",
-      roomNumber: "101",
-      startDate: "01/05/2023",
-      endDate: "01/05/2024",
-      status: "active" as ContractStatus,
-      monthlyRent: 4500000,
-      deposit: 9000000
-    },
-    {
-      id: "CTR-002",
-      tenantName: "Trần Thị B",
-      roomNumber: "102",
-      startDate: "15/06/2023",
-      endDate: "15/06/2024",
-      status: "active" as ContractStatus,
-      monthlyRent: 5000000,
-      deposit: 10000000
-    },
-    {
-      id: "CTR-003",
-      tenantName: "Lê Văn C",
-      roomNumber: "103",
-      startDate: "10/01/2023",
-      endDate: "10/01/2024",
-      status: "expired" as ContractStatus,
-      monthlyRent: 4800000,
-      deposit: 9600000
-    },
-    {
-      id: "CTR-004",
-      tenantName: "Phạm Thị D",
-      roomNumber: "201",
-      startDate: "20/07/2023",
-      endDate: "20/07/2024",
-      status: "active" as ContractStatus,
-      monthlyRent: 5200000,
-      deposit: 10400000
-    },
-  ];
-
-  const filteredContracts = contracts.filter(contract => {
-    // Lọc theo trạng thái
-    if (activeTab === "active" && contract.status !== "active") return false;
-    if (activeTab === "expired" && contract.status !== "expired") return false;
-    
-    // Lọc theo chuỗi tìm kiếm
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      return (
-        contract.id.toLowerCase().includes(query) ||
-        contract.tenantName.toLowerCase().includes(query) ||
-        contract.roomNumber.toLowerCase().includes(query)
-      );
-    }
-    
-    return true;
-  });
+  const filteredContracts = filterContracts(contracts, activeTab, searchQuery);
 
   const handleAddContract = () => {
     setIsOpen(false);
@@ -93,19 +80,6 @@ const ContractsPage = () => {
       title: "Đã tạo hợp đồng mới",
       description: "Hợp đồng đã được tạo thành công",
     });
-  };
-
-  const getStatusBadge = (status: ContractStatus) => {
-    switch (status) {
-      case "active":
-        return <Badge className="bg-emerald-100 text-emerald-800">Đang hiệu lực</Badge>;
-      case "expired":
-        return <Badge className="bg-rose-100 text-rose-800">Đã hết hạn</Badge>;
-      case "pending":
-        return <Badge className="bg-amber-100 text-amber-800">Chờ ký kết</Badge>;
-      default:
-        return <Badge className="bg-gray-100 text-gray-800">Không xác định</Badge>;
-    }
   };
 
   return (
@@ -232,34 +206,7 @@ const ContractsPage = () => {
         </div>
 
         <div className="mt-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Thống kê hợp đồng</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="dashboard-card p-4 flex flex-col items-center">
-                  <div className="text-3xl font-bold gradient-text mb-2">
-                    {contracts.filter(c => c.status === "active").length}
-                  </div>
-                  <div className="text-sm text-muted-foreground">Hợp đồng đang hiệu lực</div>
-                </div>
-                <div className="dashboard-card p-4 flex flex-col items-center">
-                  <div className="text-3xl font-bold gradient-text mb-2">
-                    {contracts.filter(c => c.status === "expired").length}
-                  </div>
-                  <div className="text-sm text-muted-foreground">Hợp đồng đã hết hạn</div>
-                </div>
-                <div className="dashboard-card p-4 flex flex-col items-center">
-                  <div className="text-3xl font-bold gradient-text mb-2">
-                    {contracts.reduce((total, contract) => 
-                      contract.status === "active" ? total + contract.monthlyRent : total, 0).toLocaleString('vi-VN')} đ
-                  </div>
-                  <div className="text-sm text-muted-foreground">Tổng giá trị hợp đồng/tháng</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <ContractStatsCard contracts={contracts} />
         </div>
       </div>
     </DashboardLayout>
