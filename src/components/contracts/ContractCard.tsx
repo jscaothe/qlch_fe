@@ -7,25 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import ContractDetail from "./ContractDetail";
 import { Contract, ContractStatus } from "@/types/contracts";
-
-// Constants for status display mapping
-const STATUS_DISPLAY = {
-  active: { text: "Đang hiệu lực", className: "bg-emerald-100 text-emerald-800" },
-  expired: { text: "Đã hết hạn", className: "bg-rose-100 text-rose-800" },
-  pending: { text: "Chờ ký kết", className: "bg-amber-100 text-amber-800" },
-};
+import { getStatusConfig } from "@/utils/contractUtils";
 
 type ContractCardProps = {
   contract: Contract;
 };
 
 const ContractCard = ({ contract }: ContractCardProps) => {
-  const getStatusBadge = (status: ContractStatus) => {
-    const statusConfig = STATUS_DISPLAY[status] || { 
-      text: "Không xác định", 
-      className: "bg-gray-100 text-gray-800" 
-    };
-    
+  const renderStatusBadge = (status: ContractStatus) => {
+    const statusConfig = getStatusConfig(status);
     return (
       <Badge className={statusConfig.className}>
         {statusConfig.text}
@@ -39,7 +29,7 @@ const ContractCard = ({ contract }: ContractCardProps) => {
         <div className="p-4">
           <div className="flex justify-between items-start mb-2">
             <h3 className="font-semibold">{contract.id}</h3>
-            {getStatusBadge(contract.status)}
+            {renderStatusBadge(contract.status)}
           </div>
           
           <div className="space-y-2 mt-4">

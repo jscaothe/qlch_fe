@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { FileText, Plus, Search, FileCheck, FileX } from "lucide-react";
@@ -13,13 +12,14 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import ContractCard from "@/components/contracts/ContractCard";
 import ContractForm from "@/components/contracts/ContractForm";
 import ContractStatsCard from "@/components/contracts/ContractStatsCard";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Contract, ContractStatus } from "@/types/contracts";
-import { getStatusBadge, filterContracts } from "@/utils/contractUtils";
+import { getStatusConfig, filterContracts } from "@/utils/contractUtils";
 
 // Mock data
 const MOCK_CONTRACTS: Contract[] = [
@@ -80,6 +80,15 @@ const ContractsPage = () => {
       title: "Đã tạo hợp đồng mới",
       description: "Hợp đồng đã được tạo thành công",
     });
+  };
+
+  const renderStatusBadge = (status: ContractStatus) => {
+    const statusConfig = getStatusConfig(status);
+    return (
+      <Badge className={statusConfig.className}>
+        {statusConfig.text}
+      </Badge>
+    );
   };
 
   return (
@@ -148,7 +157,6 @@ const ContractsPage = () => {
           </div>
         </div>
 
-        {/* Hiển thị trên thiết bị di động */}
         <div className="grid grid-cols-1 gap-4 md:hidden">
           {filteredContracts.map((contract) => (
             <ContractCard key={contract.id} contract={contract} />
@@ -163,7 +171,6 @@ const ContractsPage = () => {
           )}
         </div>
 
-        {/* Hiển thị trên tablet/desktop */}
         <div className="hidden md:block">
           <Card>
             <CardContent className="p-0">
@@ -188,7 +195,7 @@ const ContractsPage = () => {
                       <TableCell>{contract.startDate}</TableCell>
                       <TableCell>{contract.endDate}</TableCell>
                       <TableCell>{contract.monthlyRent.toLocaleString('vi-VN')} đ</TableCell>
-                      <TableCell>{getStatusBadge(contract.status)}</TableCell>
+                      <TableCell>{renderStatusBadge(contract.status)}</TableCell>
                     </TableRow>
                   ))}
                   

@@ -1,5 +1,4 @@
 
-import { Badge } from "@/components/ui/badge";
 import { Contract, ContractStatus } from "@/types/contracts";
 
 // Constants for status display mapping
@@ -9,17 +8,12 @@ export const STATUS_DISPLAY = {
   pending: { text: "Chờ ký kết", className: "bg-amber-100 text-amber-800" },
 };
 
-export const getStatusBadge = (status: ContractStatus) => {
-  const statusConfig = STATUS_DISPLAY[status] || { 
+// Instead of returning JSX directly, we'll return the configuration for the Badge
+export const getStatusConfig = (status: ContractStatus) => {
+  return STATUS_DISPLAY[status] || { 
     text: "Không xác định", 
     className: "bg-gray-100 text-gray-800" 
   };
-  
-  return (
-    <Badge className={statusConfig.className}>
-      {statusConfig.text}
-    </Badge>
-  );
 };
 
 // Filter contracts based on status and search query
