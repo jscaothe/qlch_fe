@@ -281,6 +281,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
 ];
 
 const FinancesPage = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
   const [transactions, setTransactions] = useState<Transaction[]>(MOCK_TRANSACTIONS);
   const [searchQuery, setSearchQuery] = useState("");
@@ -335,17 +336,16 @@ const FinancesPage = () => {
 
   return (
     <DashboardLayout>
-      <div className="admin-container">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-          <h1 className="page-title flex items-center">
-            <Wallet className="mr-2 h-8 w-8" />
+      <div className="admin-container animate-fade-in">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+          <h1 className="page-title mb-4 sm:mb-0">
             Quản lý thu chi
           </h1>
           
-          <Dialog>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="md:ml-auto">
-                <Plus className="mr-2 h-4 w-4" />
+              <Button className="gradient-primary">
+                <Plus size={16} />
                 Thêm giao dịch
               </Button>
             </DialogTrigger>

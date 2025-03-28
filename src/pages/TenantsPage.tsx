@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Plus, Search, UserPlus } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
@@ -6,6 +5,14 @@ import TenantCard, { Tenant } from "@/components/tenants/TenantCard";
 import TenantForm from "@/components/tenants/TenantForm";
 import { Room } from "@/components/rooms/RoomCard";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 // Dữ liệu mẫu - trong ứng dụng thực tế sẽ được lấy từ API/backend
 const mockRooms: Room[] = [
@@ -65,8 +72,8 @@ const mockTenants: Tenant[] = [
 ];
 
 const TenantsPage = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [tenants, setTenants] = useState<Tenant[]>(mockTenants);
-  const [showForm, setShowForm] = useState(false);
   const [editingTenant, setEditingTenant] = useState<Tenant | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   
@@ -85,7 +92,7 @@ const TenantsPage = () => {
     };
     
     setTenants([...tenants, newTenant]);
-    setShowForm(false);
+    setIsOpen(false);
     
     toast({
       title: "Thành công!",
@@ -124,11 +131,11 @@ const TenantsPage = () => {
 
   const handleEditTenant = (tenant: Tenant) => {
     setEditingTenant(tenant);
-    setShowForm(true);
+    setIsOpen(true);
   };
 
   const handleCancelForm = () => {
-    setShowForm(false);
+    setIsOpen(false);
     setEditingTenant(null);
   };
 
@@ -138,28 +145,27 @@ const TenantsPage = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
           <h1 className="page-title mb-4 sm:mb-0">Quản lý khách thuê</h1>
           
-          <button
-            onClick={() => {
-              setEditingTenant(null);
-              setShowForm(true);
-            }}
-            className="btn-primary flex items-center justify-center"
-          >
-            <UserPlus size={18} className="mr-1" /> Thêm khách thuê
-          </button>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button className="gradient-primary">
+                <UserPlus size={16} /> Thêm khách thuê
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <DialogHeader>
+                <DialogTitle>
+                  {editingTenant ? "Chỉnh sửa thông tin khách thuê" : "Thêm khách thuê mới"}
+                </DialogTitle>
+              </DialogHeader>
+              <TenantForm
+                initialData={editingTenant || undefined}
+                availableRooms={mockRooms}
+                onSubmit={editingTenant ? handleUpdateTenant : handleAddTenant}
+                onCancel={handleCancelForm}
+              />
+            </DialogContent>
+          </Dialog>
         </div>
-
-        {/* Form thêm/sửa khách thuê */}
-        {showForm && (
-          <div className="mb-8">
-            <TenantForm
-              initialData={editingTenant || undefined}
-              availableRooms={mockRooms}
-              onSubmit={editingTenant ? handleUpdateTenant : handleAddTenant}
-              onCancel={handleCancelForm}
-            />
-          </div>
-        )}
 
         {/* Tìm kiếm */}
         <div className="glass-card p-4 mb-6">

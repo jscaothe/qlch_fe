@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -12,7 +11,8 @@ import {
   Calendar,
   Wallet,
   ClipboardCheck,
-  BarChart3
+  BarChart3,
+  Wrench
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -59,6 +59,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     { icon: Calendar, label: "Hợp đồng", to: "/contracts" },
     { icon: Wallet, label: "Thu chi", to: "/finances" },
     { icon: ClipboardCheck, label: "Hóa đơn", to: "/invoices" },
+    { icon: Wrench, label: "Bảo trì", to: "/maintenance" },
     { icon: UserPlus, label: "Người dùng", to: "/users" },
     { icon: BarChart3, label: "Báo cáo", to: "/reports" },
     { icon: Settings, label: "Cài đặt", to: "/settings" },

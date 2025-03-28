@@ -1,69 +1,76 @@
-# Welcome to your Lovable project
+# Project Name
 
-## Project info
+## 📑 Mục lục
+- [Giới thiệu](#giới-thiệu)
+- [Tính năng](#tính-năng)
+- [Công nghệ sử dụng](#công-nghệ-sử-dụng)
+- [Cấu trúc dự án](#cấu-trúc-dự-án)
+- [Hướng dẫn cài đặt](#hướng-dẫn-cài-đặt)
+- [Triển khai](#triển-khai)
 
-**URL**: https://lovable.dev/projects/532401a0-a5b3-4868-997b-77464dac0849
+## 🚀 Giới thiệu
+Đây là dự án được xây dựng bằng các công nghệ hiện đại như React, TypeScript và Vite, tập trung vào trải nghiệm người dùng với giao diện đẹp mắt sử dụng shadcn-ui và Tailwind CSS.
 
-## How can I edit this code?
+## ✨ Tính năng
+- **Giao diện người dùng hiện đại**: Sử dụng shadcn-ui để tạo UI/UX đẹp mắt và nhất quán
+- **Phát triển nhanh chóng**: Được xây dựng trên Vite để có trải nghiệm phát triển nhanh và hiệu quả
+- **Type-safe**: TypeScript được tích hợp sẵn giúp phát hiện lỗi sớm và cải thiện khả năng bảo trì
+- **Responsive Design**: Giao diện tương thích với mọi thiết bị nhờ Tailwind CSS
+- **Tích hợp Lovable**: Hỗ trợ phát triển và triển khai thông qua nền tảng Lovable
 
-There are several ways of editing your application.
+## 🛠 Công nghệ sử dụng
+- [Vite](https://vitejs.dev/) - Build tool và dev server
+- [React](https://reactjs.org/) - Thư viện UI
+- [TypeScript](https://www.typescriptlang.org/) - JavaScript với kiểu dữ liệu tĩnh
+- [Tailwind CSS](https://tailwindcss.com/) - Framework CSS utility-first
+- [shadcn-ui](https://ui.shadcn.com/) - Thư viện components có thể tái sử dụng
 
-**Use Lovable**
+## �� Cấu trúc dự án
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/532401a0-a5b3-4868-997b-77464dac0849) and start prompting.
+## 🚀 Hướng dẫn cài đặt
 
-Changes made via Lovable will be committed automatically to this repo.
+### Yêu cầu hệ thống
+- Node.js (phiên bản 14.0.0 trở lên)
+- npm hoặc yarn
 
-**Use your preferred IDE**
+### Các bước cài đặt
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+1. Clone repository:
+```bash
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
 ```
 
-**Edit a file directly in GitHub**
+2. Di chuyển vào thư mục dự án:
+```bash
+cd <YOUR_PROJECT_NAME>
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. Cài đặt dependencies:
+```bash
+npm install
+# hoặc
+yarn install
+```
 
-**Use GitHub Codespaces**
+4. Khởi chạy môi trường development:
+```bash
+npm run dev
+# hoặc
+yarn dev
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Ứng dụng sẽ chạy tại `http://localhost:5173`
 
-## What technologies are used for this project?
+## 🌐 Triển khai
 
-This project is built with .
+### Sử dụng Lovable
+1. Truy cập [Lovable Project](https://lovable.dev/projects/532401a0-a5b3-4868-997b-77464dac0849)
+2. Chọn Share -> Publish
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Sử dụng Custom Domain
+Hiện tại dự án chưa hỗ trợ custom domain trực tiếp. Để sử dụng custom domain, bạn có thể:
+1. Triển khai dự án lên Netlify
+2. Cấu hình domain của bạn theo hướng dẫn tại [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/532401a0-a5b3-4868-997b-77464dac0849) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+## 📝 License
+MIT

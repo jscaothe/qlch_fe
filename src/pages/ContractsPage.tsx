@@ -93,9 +93,9 @@ const ContractsPage = () => {
 
   return (
     <DashboardLayout>
-      <div className="admin-container">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="page-title">Quản lý hợp đồng</h1>
+      <div className="admin-container animate-fade-in">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+          <h1 className="page-title mb-4 sm:mb-0">Quản lý hợp đồng</h1>
           
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>

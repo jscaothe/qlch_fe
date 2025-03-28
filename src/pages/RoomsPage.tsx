@@ -1,10 +1,17 @@
-
 import React, { useState } from "react";
 import { Plus, Search } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import RoomCard, { Room } from "@/components/rooms/RoomCard";
 import RoomForm from "@/components/rooms/RoomForm";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 // Dữ liệu mẫu - trong ứng dụng thực tế sẽ được lấy từ API/backend
 const mockRooms: Room[] = [
@@ -67,7 +74,7 @@ const mockRooms: Room[] = [
 
 const RoomsPage = () => {
   const [rooms, setRooms] = useState<Room[]>(mockRooms);
-  const [showForm, setShowForm] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "vacant" | "occupied" | "maintenance">("all");
@@ -89,7 +96,7 @@ const RoomsPage = () => {
     };
     
     setRooms([...rooms, newRoom]);
-    setShowForm(false);
+    setIsOpen(false);
     
     toast({
       title: "Thành công!",
@@ -124,11 +131,11 @@ const RoomsPage = () => {
 
   const handleEditRoom = (room: Room) => {
     setEditingRoom(room);
-    setShowForm(true);
+    setIsOpen(true);
   };
 
   const handleCancelForm = () => {
-    setShowForm(false);
+    setIsOpen(false);
     setEditingRoom(null);
   };
 
@@ -138,27 +145,26 @@ const RoomsPage = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
           <h1 className="page-title mb-4 sm:mb-0">Quản lý phòng</h1>
           
-          <button
-            onClick={() => {
-              setEditingRoom(null);
-              setShowForm(true);
-            }}
-            className="btn-primary flex items-center justify-center"
-          >
-            <Plus size={18} className="mr-1" /> Thêm phòng mới
-          </button>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button className="gradient-primary">
+                <Plus size={16}  /> Thêm phòng mới
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <DialogHeader>
+                <DialogTitle>
+                  {editingRoom ? "Chỉnh sửa thông tin phòng" : "Thêm phòng mới"}
+                </DialogTitle>
+              </DialogHeader>
+              <RoomForm
+                initialData={editingRoom || undefined}
+                onSubmit={editingRoom ? handleUpdateRoom : handleAddRoom}
+                onCancel={handleCancelForm}
+              />
+            </DialogContent>
+          </Dialog>
         </div>
-
-        {/* Form thêm/sửa phòng */}
-        {showForm && (
-          <div className="mb-8">
-            <RoomForm
-              initialData={editingRoom || undefined}
-              onSubmit={editingRoom ? handleUpdateRoom : handleAddRoom}
-              onCancel={handleCancelForm}
-            />
-          </div>
-        )}
 
         {/* Bộ lọc và tìm kiếm */}
         <div className="glass-card p-4 mb-6">
