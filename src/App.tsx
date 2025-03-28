@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import RoomsPage from "./pages/RoomsPage";
 import TenantsPage from "./pages/TenantsPage";
 import ContractsPage from "./pages/ContractsPage";
+import FinancesPage from "./pages/FinancesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,7 +25,7 @@ const App = () => {
             <Route path="/rooms" element={<RoomsPage />} />
             <Route path="/tenants" element={<TenantsPage />} />
             <Route path="/contracts" element={<ContractsPage />} />
-            <Route path="/finances" element={<NotFound />} />
+            <Route path="/finances" element={<FinancesPage />} />
             <Route path="/invoices" element={<NotFound />} />
             <Route path="/users" element={<NotFound />} />
             <Route path="/reports" element={<NotFound />} />
