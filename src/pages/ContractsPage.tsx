@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { FileText, Plus, Search, Filter, CalendarCheck, FileCheck, FileX } from "lucide-react";
@@ -18,6 +17,7 @@ import ContractCard from "@/components/contracts/ContractCard";
 import ContractForm from "@/components/contracts/ContractForm";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Contract, ContractStatus } from "@/types/contracts";
 
 const ContractsPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,15 +25,15 @@ const ContractsPage = () => {
   const [activeTab, setActiveTab] = useState<"all" | "active" | "expired">("all");
   const { toast } = useToast();
 
-  // Dữ liệu giả lập cho hợp đồng
-  const contracts = [
+  // Dữ liệu giả lập cho hợp đồng - đảm bảo status có kiểu ContractStatus
+  const contracts: Contract[] = [
     {
       id: "CTR-001",
       tenantName: "Nguyễn Văn A",
       roomNumber: "101",
       startDate: "01/05/2023",
       endDate: "01/05/2024",
-      status: "active",
+      status: "active" as ContractStatus,
       monthlyRent: 4500000,
       deposit: 9000000
     },
@@ -43,7 +43,7 @@ const ContractsPage = () => {
       roomNumber: "102",
       startDate: "15/06/2023",
       endDate: "15/06/2024",
-      status: "active",
+      status: "active" as ContractStatus,
       monthlyRent: 5000000,
       deposit: 10000000
     },
@@ -53,7 +53,7 @@ const ContractsPage = () => {
       roomNumber: "103",
       startDate: "10/01/2023",
       endDate: "10/01/2024",
-      status: "expired",
+      status: "expired" as ContractStatus,
       monthlyRent: 4800000,
       deposit: 9600000
     },
@@ -63,7 +63,7 @@ const ContractsPage = () => {
       roomNumber: "201",
       startDate: "20/07/2023",
       endDate: "20/07/2024",
-      status: "active",
+      status: "active" as ContractStatus,
       monthlyRent: 5200000,
       deposit: 10400000
     },
@@ -95,7 +95,7 @@ const ContractsPage = () => {
     });
   };
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: ContractStatus) => {
     switch (status) {
       case "active":
         return <Badge className="bg-emerald-100 text-emerald-800">Đang hiệu lực</Badge>;

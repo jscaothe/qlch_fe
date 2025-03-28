@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,19 +5,7 @@ import { Calendar, Home, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import ContractDetail from "./ContractDetail";
-
-type ContractStatus = "active" | "expired" | "pending";
-
-type Contract = {
-  id: string;
-  tenantName: string;
-  roomNumber: string;
-  startDate: string;
-  endDate: string;
-  status: ContractStatus;
-  monthlyRent: number;
-  deposit: number;
-};
+import { Contract, ContractStatus } from "@/types/contracts";
 
 type ContractCardProps = {
   contract: Contract;

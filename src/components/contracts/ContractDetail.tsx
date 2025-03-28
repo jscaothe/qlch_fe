@@ -1,23 +1,10 @@
-
 import React from "react";
 import { CalendarCheck, Home, User, Calendar, BanknoteIcon, ShieldCheck, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-
-type ContractStatus = "active" | "expired" | "pending";
-
-type Contract = {
-  id: string;
-  tenantName: string;
-  roomNumber: string;
-  startDate: string;
-  endDate: string;
-  status: ContractStatus;
-  monthlyRent: number;
-  deposit: number;
-};
+import { Contract } from "@/types/contracts";
 
 type ContractDetailProps = {
   contract: Contract;
