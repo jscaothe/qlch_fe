@@ -34,6 +34,8 @@ const StatusBadge = ({ status, className }: StatusBadgeProps) => {
         config.className,
         className
       )}
+      aria-label={`Trạng thái: ${config.label}`}
+      tabIndex={0}
     >
       {config.label}
     </span>

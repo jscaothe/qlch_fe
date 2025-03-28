@@ -13,8 +13,20 @@ type OccupancyChartProps = {
 };
 
 const OccupancyChart = ({ data }: OccupancyChartProps) => {
+  if (!data || data.length === 0) {
+    return (
+      <div className="dashboard-card h-[300px] flex items-center justify-center">
+        <p className="text-gray-500">Không có dữ liệu hiển thị</p>
+      </div>
+    );
+  }
+  
   return (
-    <div className="dashboard-card h-[300px]">
+    <div 
+      className="dashboard-card h-[300px]"
+      role="region" 
+      aria-label="Biểu đồ tỷ lệ lấp đầy phòng"
+    >
       <h3 className="text-lg font-semibold mb-4">Tỷ lệ lấp đầy</h3>
       
       <ResponsiveContainer width="100%" height="80%">
