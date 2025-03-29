@@ -25,7 +25,7 @@
 - [Tailwind CSS](https://tailwindcss.com/) - Framework CSS utility-first
 - [shadcn-ui](https://ui.shadcn.com/) - Thư viện components có thể tái sử dụng
 
-## �� Cấu trúc dự án
+## 📦 Cấu trúc dự án
 
 ## 🚀 Hướng dẫn cài đặt
 
@@ -52,7 +52,14 @@ npm install
 yarn install
 ```
 
-4. Khởi chạy môi trường development:
+4. Cài đặt biến môi trường:
+- Tạo file `.env` trong thư mục gốc của dự án
+- Thêm các biến môi trường sau:
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+5. Khởi chạy môi trường development:
 ```bash
 npm run dev
 # hoặc

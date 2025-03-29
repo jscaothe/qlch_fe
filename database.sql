@@ -1,8 +1,8 @@
 -- Tạo database
-CREATE DATABASE apartment_management;
+CREATE DATABASE qlch_db;
 
 -- Kết nối vào database
-\c apartment_management;
+\c qlch_db;
 
 -- Tạo các enum types
 CREATE TYPE user_role AS ENUM ('admin', 'manager', 'staff');
