@@ -23,8 +23,16 @@ const mockRooms: Room[] = [
     area: 25,
     price: 5000000,
     status: "occupied",
+    roomType: "Studio",
     amenities: ["TV", "Tủ lạnh", "Điều hòa", "Máy giặt"],
-    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXBhcnRtZW50fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXBhcnRtZW50fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      },
+    ],
   },
   {
     id: "2",
@@ -34,41 +42,76 @@ const mockRooms: Room[] = [
     area: 30,
     price: 6000000,
     status: "vacant",
+    roomType: "Studio",
     amenities: ["TV", "Tủ lạnh", "Điều hòa", "Máy giặt", "Ban công"],
-    image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTF8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTZ8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      },
+    ],
   },
   {
     id: "3",
-    name: "Studio B01",
+    name: "Căn hộ B01",
     floor: 2,
     roomNumber: "B01",
-    area: 28,
-    price: 5500000,
+    area: 45,
+    price: 8500000,
     status: "maintenance",
+    roomType: "Căn hộ 1 phòng ngủ",
     amenities: ["TV", "Tủ lạnh", "Điều hòa"],
-    image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      },
+    ],
   },
   {
     id: "4",
-    name: "Studio B02",
+    name: "Căn hộ B02",
     floor: 2,
     roomNumber: "B02",
-    area: 32,
-    price: 6500000,
+    area: 45,
+    price: 8500000,
     status: "vacant",
+    roomType: "Căn hộ 1 phòng ngủ",
     amenities: ["TV", "Tủ lạnh", "Điều hòa", "Máy giặt", "Ban công"],
-    image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTF8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTF8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTZ8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      },
+    ],
   },
   {
     id: "5",
-    name: "Studio C01",
+    name: "Căn hộ C01",
     floor: 3,
     roomNumber: "C01",
-    area: 35,
-    price: 7000000,
+    area: 65,
+    price: 12000000,
     status: "occupied",
+    roomType: "Căn hộ 2 phòng ngủ",
     amenities: ["TV", "Tủ lạnh", "Điều hòa", "Máy giặt", "Ban công", "Bồn tắm"],
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTZ8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTZ8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXBhcnRtZW50fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      },
+    ],
   },
 ];
 
@@ -78,15 +121,19 @@ const RoomsPage = () => {
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "vacant" | "occupied" | "maintenance">("all");
+  const [roomTypeFilter, setRoomTypeFilter] = useState<string>("all");
   
   const { toast } = useToast();
+
+  const roomTypes = ["Studio", "Căn hộ 1 phòng ngủ", "Căn hộ 2 phòng ngủ"];
 
   const filteredRooms = rooms.filter(room => {
     const matchesSearch = room.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          room.roomNumber.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || room.status === statusFilter;
+    const matchesType = roomTypeFilter === "all" || room.roomType === roomTypeFilter;
     
-    return matchesSearch && matchesStatus;
+    return matchesSearch && matchesStatus && matchesType;
   });
 
   const handleAddRoom = (newRoomData: Omit<Room, "id">) => {
@@ -182,11 +229,24 @@ const RoomsPage = () => {
             
             <div className="w-full md:w-40">
               <select
+                value={roomTypeFilter}
+                onChange={(e) => setRoomTypeFilter(e.target.value)}
+                className="form-input"
+              >
+                <option value="all">Tất cả loại phòng</option>
+                {roomTypes.map(type => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="w-full md:w-40">
+              <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as any)}
                 className="form-input"
               >
-                <option value="all">Tất cả</option>
+                <option value="all">Tất cả trạng thái</option>
                 <option value="vacant">Còn trống</option>
                 <option value="occupied">Đã thuê</option>
                 <option value="maintenance">Bảo trì</option>

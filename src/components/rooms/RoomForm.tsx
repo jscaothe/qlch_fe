@@ -1,7 +1,12 @@
-
 import React, { useState } from "react";
-import { X, Plus } from "lucide-react";
+import { X, Plus, Image as ImageIcon, Upload } from "lucide-react";
 import { Room } from "@/components/rooms/RoomCard";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 type RoomFormProps = {
   initialData?: Room;
@@ -17,11 +22,14 @@ const RoomForm = ({ initialData, onSubmit, onCancel }: RoomFormProps) => {
     area: initialData?.area || 0,
     price: initialData?.price || 0,
     status: initialData?.status || "vacant",
+    roomType: initialData?.roomType || "",
     amenities: initialData?.amenities || [],
-    image: initialData?.image || "",
+    images: initialData?.images || [],
   });
 
   const [newAmenity, setNewAmenity] = useState("");
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -34,6 +42,33 @@ const RoomForm = ({ initialData, onSubmit, onCancel }: RoomFormProps) => {
         ? Number(value) 
         : value,
     }));
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({
+          ...prev,
+          images: [...prev.images, { url: reader.result as string }]
+        }));
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+    setIsImageDialogOpen(true);
   };
 
   const handleAddAmenity = () => {
@@ -64,6 +99,40 @@ const RoomForm = ({ initialData, onSubmit, onCancel }: RoomFormProps) => {
         {initialData ? "Chỉnh sửa phòng" : "Thêm phòng mới"}
       </h2>
 
+      <div className="form-group mb-6">
+        <label className="form-label mb-2">Hình ảnh phòng</label>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-4">
+          {formData.images.map((image, index) => (
+            <div key={index} className="relative group aspect-square">
+              <img
+                src={image.url}
+                alt={`Hình ảnh ${index + 1}`}
+                className="w-full h-full object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                onClick={() => handleImageClick(index)}
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveImage(index)}
+                className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <X size={14} />
+              </button>
+            </div>
+          ))}
+          <label className="relative aspect-square border-2 border-dashed border-gray-300 rounded-lg hover:border-primary transition-colors cursor-pointer flex flex-col items-center justify-center">
+            <Upload size={24} className="text-gray-400 mb-2" />
+            <span className="text-sm text-gray-500">Thêm ảnh</span>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageUpload}
+              className="hidden"
+            />
+          </label>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="form-group">
           <label htmlFor="name" className="form-label">
@@ -78,6 +147,25 @@ const RoomForm = ({ initialData, onSubmit, onCancel }: RoomFormProps) => {
             className="form-input"
             required
           />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="roomType" className="form-label">
+            Loại phòng
+          </label>
+          <select
+            id="roomType"
+            name="roomType"
+            value={formData.roomType}
+            onChange={handleChange}
+            className="form-input"
+            required
+          >
+            <option value="">Chọn loại phòng</option>
+            <option value="Studio">Studio</option>
+            <option value="Căn hộ 1 phòng ngủ">Căn hộ 1 phòng ngủ</option>
+            <option value="Căn hộ 2 phòng ngủ">Căn hộ 2 phòng ngủ</option>
+          </select>
         </div>
 
         <div className="form-group">
@@ -163,21 +251,6 @@ const RoomForm = ({ initialData, onSubmit, onCancel }: RoomFormProps) => {
         </div>
 
         <div className="form-group md:col-span-2">
-          <label htmlFor="image" className="form-label">
-            URL hình ảnh
-          </label>
-          <input
-            type="text"
-            id="image"
-            name="image"
-            value={formData.image || ""}
-            onChange={handleChange}
-            className="form-input"
-            placeholder="https://example.com/image.jpg"
-          />
-        </div>
-
-        <div className="form-group md:col-span-2">
           <label className="form-label">Tiện nghi</label>
           <div className="flex items-center">
             <input
@@ -215,6 +288,35 @@ const RoomForm = ({ initialData, onSubmit, onCancel }: RoomFormProps) => {
           </div>
         </div>
       </div>
+
+      <Dialog open={isImageDialogOpen} onOpenChange={setIsImageDialogOpen}>
+        <DialogContent className="sm:max-w-[800px] p-0">
+          <DialogHeader>
+            <DialogTitle className="p-4">Xem hình ảnh</DialogTitle>
+          </DialogHeader>
+          {selectedImageIndex !== null && (
+            <div className="relative aspect-video">
+              <img
+                src={formData.images[selectedImageIndex].url}
+                alt={`Hình ảnh ${selectedImageIndex + 1}`}
+                className="w-full h-full object-contain"
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-4 flex justify-center gap-2 bg-gradient-to-t from-black/50">
+                {formData.images.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => setSelectedImageIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      index === selectedImageIndex ? 'bg-white' : 'bg-white/50'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <div className="mt-6 flex justify-end space-x-4">
         <button
