@@ -21,7 +21,7 @@ import { IUser, ICreateUserDto, IUpdateUserDto, IUserQuery, IUserResponse, UserS
 import UserTable from "@/components/users/UserTable";
 import UserForm from "@/components/users/UserForm";
 import UserStats from "@/components/users/UserStats";
-import { userService } from "@/services/user.service";
+import { UserService } from "@/services/user.service";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const UsersPage = () => {
@@ -65,14 +65,14 @@ const UsersPage = () => {
 
       console.log('Fetching users with query:', query);
       
-      const response = await userService.getUsers(query);
+      const response = await UserService.getAll(query);
       console.log('API Response in component:', response);
 
-      if (!response || !response.data) {
+      if (!response || !response.users) {
         throw new Error('Không có dữ liệu trả về từ API');
       }
 
-      const { users: userData, total: totalUsers } = response.data;
+      const { users: userData, total: totalUsers } = response;
       console.log('Processed user data:', userData);
       
       setUsers(userData);
@@ -116,7 +116,7 @@ const UsersPage = () => {
 
   const handleAddUser = async (data: ICreateUserDto) => {
     try {
-      await userService.createUser(data);
+      await UserService.create(data);
       toast({
         title: "Thành công",
         description: "Thêm người dùng mới thành công",
@@ -137,7 +137,7 @@ const UsersPage = () => {
     if (!editingUser) return;
     try {
       setFormLoading(true);
-      await userService.updateUser(editingUser.id, data);
+      await UserService.update(editingUser.id, data);
       
       // Fetch users trước khi đóng form
       await fetchUsers();
@@ -162,7 +162,7 @@ const UsersPage = () => {
 
   const handleDeleteUser = async (user: IUser) => {
     try {
-      await userService.deleteUser(user.id);
+      await UserService.delete(user.id);
       toast({
         title: "Thành công",
         description: "Xóa người dùng thành công",
@@ -182,7 +182,7 @@ const UsersPage = () => {
     try {
       setTableLoading(true);
       const newStatus = user.status === "active" ? "inactive" : "active";
-      await userService.updateUserStatus(user.id, newStatus);
+      await UserService.updateStatus(user.id, newStatus);
       toast({
         title: "Thành công",
         description: `Đã ${newStatus === "active" ? "kích hoạt" : "khóa"} tài khoản người dùng`,

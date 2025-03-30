@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { X, Plus, Image as ImageIcon, Upload } from "lucide-react";
 import { Room } from "@/components/rooms/RoomCard";
+import { RoomType } from "@/services/settings.service";
 import {
   Dialog,
   DialogContent,
@@ -12,19 +13,23 @@ type RoomFormProps = {
   initialData?: Room;
   onSubmit: (data: Omit<Room, "id">) => void;
   onCancel: () => void;
+  roomTypes: RoomType[];
 };
 
-const RoomForm = ({ initialData, onSubmit, onCancel }: RoomFormProps) => {
+const RoomForm = ({ initialData, onSubmit, onCancel, roomTypes }: RoomFormProps) => {
   const [formData, setFormData] = useState<Omit<Room, "id">>({
     name: initialData?.name || "",
     floor: initialData?.floor || 1,
-    roomNumber: initialData?.roomNumber || "",
+    roomNumber: initialData?.roomNumber || `ROOM-${Date.now()}`,
     area: initialData?.area || 0,
     price: initialData?.price || 0,
     status: initialData?.status || "vacant",
     roomType: initialData?.roomType || "",
     amenities: initialData?.amenities || [],
     images: initialData?.images || [],
+    description: initialData?.description || "",
+    createdAt: initialData?.createdAt || new Date().toISOString(),
+    updatedAt: initialData?.updatedAt || new Date().toISOString(),
   });
 
   const [newAmenity, setNewAmenity] = useState("");
@@ -52,7 +57,7 @@ const RoomForm = ({ initialData, onSubmit, onCancel }: RoomFormProps) => {
       reader.onloadend = () => {
         setFormData(prev => ({
           ...prev,
-          images: [...prev.images, { url: reader.result as string }]
+          images: [...prev.images, reader.result as string]
         }));
       };
       reader.readAsDataURL(file);
@@ -105,7 +110,7 @@ const RoomForm = ({ initialData, onSubmit, onCancel }: RoomFormProps) => {
           {formData.images.map((image, index) => (
             <div key={index} className="relative group aspect-square">
               <img
-                src={image.url}
+                src={image}
                 alt={`Hình ảnh ${index + 1}`}
                 className="w-full h-full object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
                 onClick={() => handleImageClick(index)}
@@ -157,30 +162,21 @@ const RoomForm = ({ initialData, onSubmit, onCancel }: RoomFormProps) => {
             id="roomType"
             name="roomType"
             value={formData.roomType}
-            onChange={handleChange}
+            onChange={(e) => {
+              const selectedType = roomTypes.find(type => type.id === e.target.value);
+              setFormData(prev => ({
+                ...prev,
+                roomType: e.target.value,
+              }));
+            }}
             className="form-input"
             required
           >
             <option value="">Chọn loại phòng</option>
-            <option value="Studio">Studio</option>
-            <option value="Căn hộ 1 phòng ngủ">Căn hộ 1 phòng ngủ</option>
-            <option value="Căn hộ 2 phòng ngủ">Căn hộ 2 phòng ngủ</option>
+            {roomTypes.map(type => (
+              <option key={type.id} value={type.id}>{type.name}</option>
+            ))}
           </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="roomNumber" className="form-label">
-            Mã phòng
-          </label>
-          <input
-            type="text"
-            id="roomNumber"
-            name="roomNumber"
-            value={formData.roomNumber}
-            onChange={handleChange}
-            className="form-input"
-            required
-          />
         </div>
 
         <div className="form-group">
@@ -297,7 +293,7 @@ const RoomForm = ({ initialData, onSubmit, onCancel }: RoomFormProps) => {
           {selectedImageIndex !== null && (
             <div className="relative aspect-video">
               <img
-                src={formData.images[selectedImageIndex].url}
+                src={formData.images[selectedImageIndex]}
                 alt={`Hình ảnh ${selectedImageIndex + 1}`}
                 className="w-full h-full object-contain"
               />

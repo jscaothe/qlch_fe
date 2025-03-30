@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Edit, Trash2, Home, ChevronLeft, ChevronRight } from "lucide-react";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { cn } from "@/lib/utils";
+import { RoomType } from "@/types/room-type";
 
 export type Room = {
   id: string;
@@ -10,29 +11,32 @@ export type Room = {
   roomNumber: string;
   area: number;
   price: number;
-  status: "vacant" | "occupied" | "maintenance";
+  status: "vacant" | "occupied" | "maintenance" | "reserved";
   roomType: string;
   amenities: string[];
-  images: {
-    url: string;
-    caption?: string;
-  }[];
+  images: string[];
+  description: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 type RoomCardProps = {
   room: Room;
+  roomTypes: RoomType[];
   onEdit: (room: Room) => void;
   onDelete: (roomId: string) => void;
   className?: string;
 };
 
-const RoomCard = ({ room, onEdit, onDelete, className }: RoomCardProps) => {
+const RoomCard = ({ room, roomTypes, onEdit, onDelete, className }: RoomCardProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
   const formattedPrice = new Intl.NumberFormat("vi-VN", {
     style: "currency",
     currency: "VND",
   }).format(room.price);
+
+  const roomTypeName = roomTypes.find(type => type.id === room.roomType)?.name || "Không xác định";
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -54,7 +58,7 @@ const RoomCard = ({ room, onEdit, onDelete, className }: RoomCardProps) => {
         {room.images.length > 0 ? (
           <>
             <img
-              src={room.images[currentImageIndex].url}
+              src={room.images[currentImageIndex]}
               alt={room.name}
               className="w-full h-full object-cover"
             />
@@ -101,7 +105,7 @@ const RoomCard = ({ room, onEdit, onDelete, className }: RoomCardProps) => {
       <div className="p-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">{room.name}</h3>
-          <span className="text-sm text-primary font-medium">{room.roomType}</span>
+          <span className="text-sm text-primary font-medium">{roomTypeName}</span>
         </div>
         <div className="mt-2 space-y-1">
           <p className="text-sm text-gray-600">

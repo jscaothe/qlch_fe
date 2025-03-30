@@ -1,4 +1,4 @@
-// 20250329231507
+// 20250330144418
 // http://localhost:3000/api-json
 
 {
@@ -61,7 +61,31 @@
         ],
         "responses": {
           "200": {
-            "description": "Return all users"
+            "description": "Return all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "users": [
+                      {
+                        "id": 1,
+                        "name": "Nguyễn Văn A",
+                        "email": "nguyenvana@example.com",
+                        "phone": "0901234567",
+                        "role": "admin",
+                        "status": "active",
+                        "createdAt": "2024-03-20T10:00:00Z",
+                        "updatedAt": "2024-03-20T10:00:00Z"
+                      }
+                    ],
+                    "total": 1,
+                    "page": 1,
+                    "limit": 10,
+                    "totalPages": 1
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -86,7 +110,21 @@
         },
         "responses": {
           "201": {
-            "description": "User created successfully"
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "name": "Nguyễn Văn B",
+                    "email": "nguyenvanb@example.com",
+                    "phone": "0901234568",
+                    "password": "password123",
+                    "role": "staff",
+                    "status": "active"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -110,7 +148,23 @@
         ],
         "responses": {
           "200": {
-            "description": "Return user by id"
+            "description": "Return user by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": 1,
+                    "name": "Nguyễn Văn A",
+                    "email": "nguyenvana@example.com",
+                    "phone": "0901234567",
+                    "role": "admin",
+                    "status": "active",
+                    "createdAt": "2024-03-20T10:00:00Z",
+                    "updatedAt": "2024-03-20T10:00:00Z"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -142,7 +196,20 @@
         },
         "responses": {
           "200": {
-            "description": "User updated successfully"
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "name": "Nguyễn Văn B",
+                    "email": "nguyenvanb@example.com",
+                    "phone": "0901234568",
+                    "role": "staff",
+                    "status": "active"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -164,7 +231,16 @@
         ],
         "responses": {
           "200": {
-            "description": "User deleted successfully"
+            "description": "User deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "User deleted successfully"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -199,7 +275,8 @@
                       "active",
                       "inactive"
                     ],
-                    "description": "User status"
+                    "description": "User status",
+                    "example": "inactive"
                   }
                 },
                 "required": [
@@ -211,7 +288,18 @@
         },
         "responses": {
           "200": {
-            "description": "User status updated successfully"
+            "description": "User status updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": 1,
+                    "status": "inactive",
+                    "updatedAt": "2024-03-20T10:00:00Z"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -225,24 +313,8 @@
         "summary": "Get all rooms",
         "parameters": [
           {
-            "name": "page",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "limit",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
             "name": "search",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "string"
@@ -250,16 +322,82 @@
           },
           {
             "name": "status",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
+              "enum": [
+                "vacant",
+                "occupied",
+                "maintenance",
+                "reserved"
+              ],
               "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Return all rooms"
+            "description": "Return all rooms",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "data": [
+                      {
+                        "id": "550e8400-e29b-41d4-a716-446655440000",
+                        "name": "Room 101",
+                        "roomType": {
+                          "id": "550e8400-e29b-41d4-a716-446655440001",
+                          "name": "Deluxe Room",
+                          "description": "Luxury room with city view"
+                        },
+                        "price": 500000,
+                        "status": "vacant",
+                        "description": "Standard room with city view",
+                        "floor": 1,
+                        "area": 30,
+                        "amenities": [
+                          "Air Conditioner",
+                          "TV",
+                          "Refrigerator"
+                        ],
+                        "images": [
+                          "https://example.com/rooms/101/image1.jpg",
+                          "https://example.com/rooms/101/image2.jpg"
+                        ],
+                        "videos": [
+                          "https://example.com/rooms/101/video1.mp4",
+                          "https://example.com/rooms/101/video2.mp4"
+                        ],
+                        "createdAt": "2024-03-20T10:00:00Z",
+                        "updatedAt": "2024-03-20T10:00:00Z"
+                      }
+                    ],
+                    "meta": {
+                      "page": 1,
+                      "limit": 10,
+                      "hasMore": false
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -284,7 +422,35 @@
         },
         "responses": {
           "201": {
-            "description": "Room created successfully"
+            "description": "Room created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "name": "Room 101",
+                    "roomTypeId": "550e8400-e29b-41d4-a716-446655440000",
+                    "price": 500000,
+                    "status": "vacant",
+                    "description": "Standard room with city view",
+                    "floor": 1,
+                    "area": 30,
+                    "amenities": [
+                      "Air Conditioner",
+                      "TV",
+                      "Refrigerator"
+                    ],
+                    "images": [
+                      "https://example.com/rooms/101/image1.jpg",
+                      "https://example.com/rooms/101/image2.jpg"
+                    ],
+                    "videos": [
+                      "https://example.com/rooms/101/video1.mp4",
+                      "https://example.com/rooms/101/video2.mp4"
+                    ]
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -308,7 +474,42 @@
         ],
         "responses": {
           "200": {
-            "description": "Return room by id"
+            "description": "Return room by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "550e8400-e29b-41d4-a716-446655440000",
+                    "name": "Room 101",
+                    "roomType": {
+                      "id": "550e8400-e29b-41d4-a716-446655440001",
+                      "name": "Deluxe Room",
+                      "description": "Luxury room with city view"
+                    },
+                    "price": 500000,
+                    "status": "vacant",
+                    "description": "Standard room with city view",
+                    "floor": 1,
+                    "area": 30,
+                    "amenities": [
+                      "Air Conditioner",
+                      "TV",
+                      "Refrigerator"
+                    ],
+                    "images": [
+                      "https://example.com/rooms/101/image1.jpg",
+                      "https://example.com/rooms/101/image2.jpg"
+                    ],
+                    "videos": [
+                      "https://example.com/rooms/101/video1.mp4",
+                      "https://example.com/rooms/101/video2.mp4"
+                    ],
+                    "createdAt": "2024-03-20T10:00:00Z",
+                    "updatedAt": "2024-03-20T10:00:00Z"
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Room not found"
@@ -333,7 +534,33 @@
         ],
         "responses": {
           "200": {
-            "description": "Room updated successfully"
+            "description": "Room updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "price": 600000,
+                    "status": "maintenance",
+                    "description": "Standard room with city view (Recently renovated)",
+                    "amenities": [
+                      "Air Conditioner",
+                      "TV",
+                      "Refrigerator",
+                      "Water Heater"
+                    ],
+                    "images": [
+                      "https://example.com/rooms/101/image1.jpg",
+                      "https://example.com/rooms/101/image2.jpg",
+                      "https://example.com/rooms/101/image3.jpg"
+                    ],
+                    "videos": [
+                      "https://example.com/rooms/101/video1.mp4",
+                      "https://example.com/rooms/101/video2.mp4"
+                    ]
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Room not found"
@@ -358,7 +585,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Room deleted successfully"
+            "description": "Room deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Room deleted successfully"
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Room not found"
@@ -376,7 +612,7 @@
         "parameters": [
           {
             "name": "page",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -384,7 +620,7 @@
           },
           {
             "name": "limit",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -392,7 +628,7 @@
           },
           {
             "name": "search",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "string"
@@ -401,7 +637,44 @@
         ],
         "responses": {
           "200": {
-            "description": "Return all tenants"
+            "description": "Return all tenants",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "data": [
+                      {
+                        "id": "550e8400-e29b-41d4-a716-446655440000",
+                        "name": "Nguyễn Văn A",
+                        "phone": "0901234567",
+                        "email": "nguyenvana@example.com",
+                        "identityCard": "123456789012",
+                        "dateOfBirth": "1990-01-01",
+                        "address": "123 Đường ABC, Quận 1, TP.HCM",
+                        "startDate": "2024-01-01",
+                        "endDate": "2024-12-31",
+                        "status": "active",
+                        "room": {
+                          "id": "550e8400-e29b-41d4-a716-446655440001",
+                          "name": "Room 101",
+                          "roomType": {
+                            "id": "1",
+                            "name": "Deluxe"
+                          }
+                        },
+                        "createdAt": "2024-03-20T10:00:00Z",
+                        "updatedAt": "2024-03-20T10:00:00Z"
+                      }
+                    ],
+                    "meta": {
+                      "hasMore": false,
+                      "page": 1,
+                      "limit": 10
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -426,7 +699,24 @@
         },
         "responses": {
           "201": {
-            "description": "Tenant created successfully"
+            "description": "Tenant created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "name": "Nguyễn Văn B",
+                    "phone": "0901234568",
+                    "email": "nguyenvanb@example.com",
+                    "identityCard": "123456789013",
+                    "dateOfBirth": "1992-02-02",
+                    "address": "456 Đường XYZ, Quận 2, TP.HCM",
+                    "startDate": "2024-04-01",
+                    "endDate": "2025-03-31",
+                    "roomId": "550e8400-e29b-41d4-a716-446655440001"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -450,7 +740,35 @@
         ],
         "responses": {
           "200": {
-            "description": "Return tenant by id"
+            "description": "Return tenant by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "550e8400-e29b-41d4-a716-446655440000",
+                    "name": "Nguyễn Văn A",
+                    "phone": "0901234567",
+                    "email": "nguyenvana@example.com",
+                    "identityCard": "123456789012",
+                    "dateOfBirth": "1990-01-01",
+                    "address": "123 Đường ABC, Quận 1, TP.HCM",
+                    "startDate": "2024-01-01",
+                    "endDate": "2024-12-31",
+                    "status": "active",
+                    "room": {
+                      "id": "550e8400-e29b-41d4-a716-446655440001",
+                      "name": "Room 101",
+                      "roomType": {
+                        "id": "1",
+                        "name": "Deluxe"
+                      }
+                    },
+                    "createdAt": "2024-03-20T10:00:00Z",
+                    "updatedAt": "2024-03-20T10:00:00Z"
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Tenant not found"
@@ -475,7 +793,19 @@
         ],
         "responses": {
           "200": {
-            "description": "Tenant updated successfully"
+            "description": "Tenant updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "phone": "0901234569",
+                    "email": "newmail@example.com",
+                    "address": "789 Đường MNO, Quận 3, TP.HCM",
+                    "endDate": "2025-06-30"
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Tenant not found"
@@ -500,7 +830,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Tenant deleted successfully"
+            "description": "Tenant deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Tenant deleted successfully"
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Tenant not found"
@@ -527,7 +866,18 @@
         ],
         "responses": {
           "200": {
-            "description": "Tenant status updated successfully"
+            "description": "Tenant status updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "550e8400-e29b-41d4-a716-446655440000",
+                    "status": "inactive",
+                    "updatedAt": "2024-03-20T10:00:00Z"
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Tenant not found"
@@ -545,7 +895,7 @@
         "parameters": [
           {
             "name": "page",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -553,7 +903,7 @@
           },
           {
             "name": "limit",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -561,7 +911,7 @@
           },
           {
             "name": "search",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "string"
@@ -570,7 +920,49 @@
         ],
         "responses": {
           "200": {
-            "description": "Return all contracts"
+            "description": "Return all contracts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "data": [
+                      {
+                        "id": "550e8400-e29b-41d4-a716-446655440000",
+                        "tenant": {
+                          "id": "550e8400-e29b-41d4-a716-446655440001",
+                          "name": "Nguyễn Văn A",
+                          "phone": "0901234567"
+                        },
+                        "room": {
+                          "id": "550e8400-e29b-41d4-a716-446655440002",
+                          "name": "Room 101",
+                          "roomType": {
+                            "id": "1",
+                            "name": "Deluxe"
+                          }
+                        },
+                        "startDate": "2024-01-01",
+                        "endDate": "2024-12-31",
+                        "deposit": 10000000,
+                        "monthlyRent": 5000000,
+                        "terms": [
+                          "Thanh toán trước ngày 5 hàng tháng",
+                          "Không được nuôi thú cưng"
+                        ],
+                        "status": "active",
+                        "createdAt": "2024-03-20T10:00:00Z",
+                        "updatedAt": "2024-03-20T10:00:00Z"
+                      }
+                    ],
+                    "meta": {
+                      "hasMore": false,
+                      "page": 1,
+                      "limit": 10
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -595,7 +987,25 @@
         },
         "responses": {
           "201": {
-            "description": "Contract created successfully"
+            "description": "Contract created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "tenantId": "550e8400-e29b-41d4-a716-446655440001",
+                    "roomId": "550e8400-e29b-41d4-a716-446655440002",
+                    "startDate": "2024-04-01",
+                    "endDate": "2025-03-31",
+                    "deposit": 10000000,
+                    "monthlyRent": 5000000,
+                    "terms": [
+                      "Thanh toán trước ngày 5 hàng tháng",
+                      "Không được nuôi thú cưng"
+                    ]
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -619,7 +1029,40 @@
         ],
         "responses": {
           "200": {
-            "description": "Return contract by id"
+            "description": "Return contract by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "550e8400-e29b-41d4-a716-446655440000",
+                    "tenant": {
+                      "id": "550e8400-e29b-41d4-a716-446655440001",
+                      "name": "Nguyễn Văn A",
+                      "phone": "0901234567"
+                    },
+                    "room": {
+                      "id": "550e8400-e29b-41d4-a716-446655440002",
+                      "name": "Room 101",
+                      "roomType": {
+                        "id": "1",
+                        "name": "Deluxe"
+                      }
+                    },
+                    "startDate": "2024-01-01",
+                    "endDate": "2024-12-31",
+                    "deposit": 10000000,
+                    "monthlyRent": 5000000,
+                    "terms": [
+                      "Thanh toán trước ngày 5 hàng tháng",
+                      "Không được nuôi thú cưng"
+                    ],
+                    "status": "active",
+                    "createdAt": "2024-03-20T10:00:00Z",
+                    "updatedAt": "2024-03-20T10:00:00Z"
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Contract not found"
@@ -644,7 +1087,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Contract updated successfully"
+            "description": "Contract updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "monthlyRent": 5500000,
+                    "terms": [
+                      "Thanh toán trước ngày 5 hàng tháng",
+                      "Không được nuôi thú cưng",
+                      "Không được hút thuốc trong phòng"
+                    ]
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Contract not found"
@@ -669,7 +1126,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Contract deleted successfully"
+            "description": "Contract deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Contract deleted successfully"
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Contract not found"
@@ -706,7 +1172,17 @@
         },
         "responses": {
           "200": {
-            "description": "Contract renewed successfully"
+            "description": "Contract renewed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "newEndDate": "2025-12-31",
+                    "newMonthlyRent": 5500000
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Only active contracts can be renewed"
@@ -746,7 +1222,17 @@
         },
         "responses": {
           "200": {
-            "description": "Contract terminated successfully"
+            "description": "Contract terminated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "reason": "Chuyển công tác",
+                    "terminationDate": "2024-06-30"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Only active contracts can be terminated"
@@ -763,10 +1249,11 @@
     "/transactions": {
       "get": {
         "operationId": "TransactionsController_findAll",
+        "summary": "Get all transactions",
         "parameters": [
           {
             "name": "page",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -774,7 +1261,7 @@
           },
           {
             "name": "limit",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -782,21 +1269,61 @@
           },
           {
             "name": "type",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
+              "enum": [
+                "rent",
+                "deposit",
+                "utility",
+                "maintenance",
+                "other"
+              ],
               "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Return all transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "transactions": [
+                      {
+                        "id": "550e8400-e29b-41d4-a716-446655440000",
+                        "type": "income",
+                        "amount": 5000000,
+                        "category": "Rent",
+                        "description": "Monthly rent payment - Room 101",
+                        "date": "2024-03-20T10:00:00Z",
+                        "roomId": "550e8400-e29b-41d4-a716-446655440001",
+                        "tenantId": "550e8400-e29b-41d4-a716-446655440002"
+                      }
+                    ],
+                    "total": 1,
+                    "page": 1,
+                    "limit": 10,
+                    "totalPages": 1,
+                    "summary": {
+                      "totalIncome": 5000000,
+                      "totalExpense": 0,
+                      "balance": 5000000
+                    }
+                  }
+                }
+              }
+            }
           }
-        }
+        },
+        "tags": [
+          "finances"
+        ]
       },
       "post": {
         "operationId": "TransactionsController_create",
+        "summary": "Create new transaction",
         "parameters": [
           
         ],
@@ -812,14 +1339,32 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "type": "expense",
+                    "amount": 1000000,
+                    "category": "Maintenance",
+                    "description": "Fix air conditioner - Room 101",
+                    "date": "2024-03-20T10:00:00Z",
+                    "roomId": "550e8400-e29b-41d4-a716-446655440001"
+                  }
+                }
+              }
+            }
           }
-        }
+        },
+        "tags": [
+          "finances"
+        ]
       }
     },
     "/transactions/{id}": {
       "get": {
         "operationId": "TransactionsController_findOne",
+        "summary": "Get transaction by id",
         "parameters": [
           {
             "name": "id",
@@ -832,12 +1377,19 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Return transaction details"
+          },
+          "404": {
+            "description": "Transaction not found"
           }
-        }
+        },
+        "tags": [
+          "finances"
+        ]
       },
       "delete": {
         "operationId": "TransactionsController_remove",
+        "summary": "Delete transaction",
         "parameters": [
           {
             "name": "id",
@@ -850,9 +1402,468 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Transaction deleted successfully"
+          },
+          "404": {
+            "description": "Transaction not found"
           }
-        }
+        },
+        "tags": [
+          "finances"
+        ]
+      }
+    },
+    "/maintenance": {
+      "get": {
+        "operationId": "MaintenanceController_findAll",
+        "summary": "Get all maintenance records",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "pending",
+                "in_progress",
+                "completed",
+                "cancelled"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all maintenance records"
+          }
+        },
+        "tags": [
+          "maintenance"
+        ]
+      },
+      "post": {
+        "operationId": "MaintenanceController_create",
+        "summary": "Create new maintenance record",
+        "parameters": [
+          
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMaintenanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Maintenance record created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "roomId": "550e8400-e29b-41d4-a716-446655440000",
+                    "type": "Repair",
+                    "description": "Fix air conditioner",
+                    "status": "pending",
+                    "scheduledDate": "2024-03-20T10:00:00Z",
+                    "estimatedCost": 1000000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "maintenance"
+        ]
+      }
+    },
+    "/maintenance/{id}/status": {
+      "patch": {
+        "operationId": "MaintenanceController_updateStatus",
+        "summary": "Update maintenance status",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMaintenanceStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Maintenance status updated successfully"
+          },
+          "404": {
+            "description": "Maintenance record not found"
+          }
+        },
+        "tags": [
+          "maintenance"
+        ]
+      }
+    },
+    "/maintenance/{id}": {
+      "get": {
+        "operationId": "MaintenanceController_findOne",
+        "summary": "Get maintenance record by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return maintenance record"
+          },
+          "404": {
+            "description": "Maintenance record not found"
+          }
+        },
+        "tags": [
+          "maintenance"
+        ]
+      }
+    },
+    "/settings": {
+      "get": {
+        "operationId": "SettingsController_getSettings",
+        "summary": "Get all settings",
+        "parameters": [
+          
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all settings"
+          }
+        },
+        "tags": [
+          "settings"
+        ]
+      }
+    },
+    "/settings/building": {
+      "put": {
+        "operationId": "SettingsController_updateBuilding",
+        "summary": "Update building information",
+        "parameters": [
+          
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBuildingDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Building information updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "name": "Luxury Apartment",
+                    "address": "123 Main Street",
+                    "numberOfFloors": 10,
+                    "description": "Modern luxury apartment building in city center"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "settings"
+        ]
+      }
+    },
+    "/settings/preferences": {
+      "put": {
+        "operationId": "SettingsController_updatePreferences",
+        "summary": "Update system preferences",
+        "parameters": [
+          
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePreferencesDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "System preferences updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "currency": "VND",
+                    "language": "vi",
+                    "timeZone": "Asia/Ho_Chi_Minh",
+                    "dateFormat": "DD/MM/YYYY",
+                    "emailNotifications": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "settings"
+        ]
+      }
+    },
+    "/settings/categories": {
+      "put": {
+        "operationId": "SettingsController_updateCategories",
+        "summary": "Update categories",
+        "parameters": [
+          
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategoriesDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Categories updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "income": [
+                      "Rent",
+                      "Deposit",
+                      "Services"
+                    ],
+                    "expense": [
+                      "Maintenance",
+                      "Utilities",
+                      "Staff"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "settings"
+        ]
+      }
+    },
+    "/settings/room-types": {
+      "post": {
+        "operationId": "SettingsController_createRoomType",
+        "summary": "Create new room type",
+        "parameters": [
+          
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoomTypeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Room type created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "name": "Deluxe Room",
+                    "description": "Luxury room with ocean view"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "settings"
+        ]
+      },
+      "get": {
+        "operationId": "SettingsController_findAllRoomTypes",
+        "summary": "Get all room types",
+        "parameters": [
+          
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all room types"
+          }
+        },
+        "tags": [
+          "settings"
+        ]
+      }
+    },
+    "/settings/room-types/{id}": {
+      "get": {
+        "operationId": "SettingsController_findRoomTypeById",
+        "summary": "Get room type by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return room type"
+          },
+          "404": {
+            "description": "Room type not found"
+          }
+        },
+        "tags": [
+          "settings"
+        ]
+      },
+      "patch": {
+        "operationId": "SettingsController_updateRoomType",
+        "summary": "Update room type",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room type updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "name": "Premium Suite",
+                    "description": "Upgraded luxury suite with additional amenities"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Room type not found"
+          }
+        },
+        "tags": [
+          "settings"
+        ]
+      },
+      "delete": {
+        "operationId": "SettingsController_deleteRoomType",
+        "summary": "Delete room type",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room type deleted successfully"
+          },
+          "404": {
+            "description": "Room type not found"
+          }
+        },
+        "tags": [
+          "settings"
+        ]
       }
     }
   },
@@ -932,6 +1943,9 @@
           "phone": {
             "type": "string"
           },
+          "password": {
+            "type": "string"
+          },
           "role": {
             "type": "string",
             "enum": [
@@ -946,9 +1960,6 @@
               "active",
               "inactive"
             ]
-          },
-          "password": {
-            "type": "string"
           }
         }
       },
@@ -983,6 +1994,42 @@
         }
       },
       "CreateTransactionDto": {
+        "type": "object",
+        "properties": {
+          
+        }
+      },
+      "CreateMaintenanceDto": {
+        "type": "object",
+        "properties": {
+          
+        }
+      },
+      "UpdateMaintenanceStatusDto": {
+        "type": "object",
+        "properties": {
+          
+        }
+      },
+      "UpdateBuildingDto": {
+        "type": "object",
+        "properties": {
+          
+        }
+      },
+      "UpdatePreferencesDto": {
+        "type": "object",
+        "properties": {
+          
+        }
+      },
+      "UpdateCategoriesDto": {
+        "type": "object",
+        "properties": {
+          
+        }
+      },
+      "CreateRoomTypeDto": {
         "type": "object",
         "properties": {
           

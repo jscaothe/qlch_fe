@@ -1,8 +1,7 @@
-
 import React from "react";
 import { cn } from "@/lib/utils";
 
-type RoomStatus = "vacant" | "occupied" | "maintenance";
+type RoomStatus = "vacant" | "occupied" | "maintenance" | "reserved";
 
 type StatusBadgeProps = {
   status: RoomStatus;
