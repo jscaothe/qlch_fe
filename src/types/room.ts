@@ -4,7 +4,6 @@ export interface Room {
   id: string;
   name: string;
   roomType: string;
-  roomNumber: string;
   price: number;
   status: 'vacant' | 'occupied' | 'maintenance' | 'reserved';
   description: string;
@@ -19,7 +18,6 @@ export interface Room {
 export interface CreateRoomDto {
   name: string;
   roomType: string;
-  roomNumber: string;
   price: number;
   status: 'vacant' | 'occupied' | 'maintenance' | 'reserved';
   description: string;
@@ -32,7 +30,6 @@ export interface CreateRoomDto {
 export interface UpdateRoomDto {
   name?: string;
   roomType?: string;
-  roomNumber?: string;
   price?: number;
   status?: 'vacant' | 'occupied' | 'maintenance' | 'reserved';
   description?: string;

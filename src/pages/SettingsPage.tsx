@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,6 +24,9 @@ import {
   Link,
   FileText
 } from 'lucide-react';
+import { RoomTypeService } from '@/services/roomTypeService';
+import { RoomType } from '@/types/room-type';
+import { toast } from 'sonner';
 
 const SettingsPage = () => {
   const [buildingInfo, setBuildingInfo] = useState({
@@ -41,6 +44,68 @@ const SettingsPage = () => {
     timezone: 'Asia/Ho_Chi_Minh',
     dateFormat: 'DD/MM/YYYY'
   });
+
+  // State cho quản lý loại phòng
+  const [roomTypes, setRoomTypes] = useState<RoomType[]>([]);
+  const [newRoomType, setNewRoomType] = useState('');
+  const [newRoomTypeDescription, setNewRoomTypeDescription] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Hàm lấy danh sách loại phòng
+  const fetchRoomTypes = async () => {
+    try {
+      setIsLoading(true);
+      const data = await RoomTypeService.getAll();
+      setRoomTypes(data);
+    } catch (error) {
+      toast.error('Không thể tải danh sách loại phòng');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Hàm thêm loại phòng mới
+  const handleAddRoomType = async () => {
+    if (!newRoomType.trim()) {
+      toast.error('Vui lòng nhập tên loại phòng');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await RoomTypeService.create({ 
+        name: newRoomType.trim(),
+        description: newRoomTypeDescription.trim()
+      });
+      toast.success('Thêm loại phòng thành công');
+      setNewRoomType('');
+      setNewRoomTypeDescription('');
+      fetchRoomTypes();
+    } catch (error) {
+      toast.error('Không thể thêm loại phòng');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Hàm xóa loại phòng
+  const handleDeleteRoomType = async (id: string) => {
+    try {
+      setIsLoading(true);
+      await RoomTypeService.delete(id);
+      toast.success('Xóa loại phòng thành công');
+      fetchRoomTypes();
+    } catch (error) {
+      toast.error('Không thể xóa loại phòng');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Load danh sách loại phòng khi component mount
+  useEffect(() => {
+    fetchRoomTypes();
+  }, []);
 
   return (
     <DashboardLayout>
@@ -279,23 +344,51 @@ const SettingsPage = () => {
               <CardContent className="space-y-6">
                 <div className="space-y-4">
                   <h3 className="font-medium">Loại phòng</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <Input placeholder="Thêm loại phòng mới" />
-                    <Button className="md:w-auto">Thêm</Button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="md:col-span-2 space-y-2">
+                      <Input 
+                        placeholder="Thêm loại phòng mới" 
+                        value={newRoomType}
+                        onChange={(e) => setNewRoomType(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleAddRoomType();
+                          }
+                        }}
+                      />
+                      <Input
+                        placeholder="Mô tả loại phòng"
+                        value={newRoomTypeDescription}
+                        onChange={(e) => setNewRoomTypeDescription(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleAddRoomType();
+                          }
+                        }}
+                      />
+                    </div>
+                    <Button 
+                      className="md:w-auto"
+                      onClick={handleAddRoomType}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? 'Đang xử lý...' : 'Thêm'}
+                    </Button>
                   </div>
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                      <span>Studio</span>
-                      <Button variant="ghost" size="sm">Xóa</Button>
-                    </div>
-                    <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                      <span>Căn hộ 1 phòng ngủ</span>
-                      <Button variant="ghost" size="sm">Xóa</Button>
-                    </div>
-                    <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                      <span>Căn hộ 2 phòng ngủ</span>
-                      <Button variant="ghost" size="sm">Xóa</Button>
-                    </div>
+                    {roomTypes.map((roomType) => (
+                      <div key={roomType.id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                        <span>{roomType.name}</span>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => handleDeleteRoomType(roomType.id)}
+                          disabled={isLoading}
+                        >
+                          Xóa
+                        </Button>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 

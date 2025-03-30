@@ -59,8 +59,7 @@ const RoomsPage = () => {
   }, []);
 
   const filteredRooms = rooms.filter(room => {
-    const matchesSearch = room.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         room.roomNumber.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = room.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || room.status === statusFilter;
     const matchesType = roomTypeFilter === "all" || room.roomType === roomTypeFilter;
     
@@ -90,13 +89,42 @@ const RoomsPage = () => {
     if (!editingRoom) return;
     
     try {
-      const updatedRoom = await roomService.updateRoom(editingRoom.id, updatedRoomData);
+      // Chỉ gửi các trường đã thay đổi và loại bỏ các trường không cần thiết
+      const changedFields = Object.entries(updatedRoomData).reduce((acc, [key, value]) => {
+        if (value !== editingRoom[key as keyof Room] && 
+            key !== 'createdAt' && 
+            key !== 'updatedAt' &&
+            [
+              'name',
+              'roomType',
+              'price',
+              'status',
+              'description',
+              'floor',
+              'area',
+              'amenities',
+              'images'
+            ].includes(key)) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {} as Partial<Omit<Room, "id">>);
+
+      // Kiểm tra nếu không có trường nào thay đổi
+      if (Object.keys(changedFields).length === 0) {
+        setEditingRoom(null);
+        setIsOpen(false);
+        return;
+      }
+
+      const updatedRoom = await roomService.updateRoom(editingRoom.id, changedFields);
       const updatedRooms = rooms.map(room => 
         room.id === editingRoom.id ? updatedRoom : room
       );
       
       setRooms(updatedRooms);
       setEditingRoom(null);
+      setIsOpen(false);
       
       toast({
         title: "Thành công!",
@@ -105,7 +133,7 @@ const RoomsPage = () => {
     } catch (error) {
       toast({
         title: "Lỗi!",
-        description: "Không thể cập nhật thông tin phòng",
+        description: error instanceof Error ? error.message : "Không thể cập nhật thông tin phòng",
         variant: "destructive",
       });
     }

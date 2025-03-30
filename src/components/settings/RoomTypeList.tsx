@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { RoomType } from '@/types/room-type';
-import { RoomTypeService } from '@/services/room-type.service';
+import { RoomTypeService } from '@/services/roomTypeService';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { RoomTypeDialog } from './RoomTypeDialog';

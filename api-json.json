@@ -1,4 +1,4 @@
-// 20250330144418
+// 20250330213617
 // http://localhost:3000/api-json
 
 {
@@ -307,7 +307,7 @@
         ]
       }
     },
-    "/rooms": {
+    "/api/rooms": {
       "get": {
         "operationId": "RoomsController_findAll",
         "summary": "Get all rooms",
@@ -458,7 +458,7 @@
         ]
       }
     },
-    "/rooms/{id}": {
+    "/api/rooms/{id}": {
       "get": {
         "operationId": "RoomsController_findOne",
         "summary": "Get room by id",
@@ -522,31 +522,72 @@
       "patch": {
         "operationId": "RoomsController_update",
         "summary": "Update room",
+        "description": "Update room information. All fields are optional. Only provided fields will be updated.",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Room ID",
             "schema": {
               "type": "string"
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Room updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": {
+        "requestBody": {
+          "required": true,
+          "description": "Room update data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoomDto"
+              },
+              "examples": {
+                "Update price and status": {
+                  "value": {
                     "price": 600000,
-                    "status": "maintenance",
-                    "description": "Standard room with city view (Recently renovated)",
+                    "status": "maintenance"
+                  },
+                  "description": "Update room price and status"
+                },
+                "Update room type and amenities": {
+                  "value": {
+                    "roomTypeId": "550e8400-e29b-41d4-a716-446655440001",
                     "amenities": [
                       "Air Conditioner",
                       "TV",
                       "Refrigerator",
                       "Water Heater"
+                    ]
+                  },
+                  "description": "Update room type and amenities"
+                },
+                "Update description and images": {
+                  "value": {
+                    "description": "Standard room with city view (Recently renovated)",
+                    "images": [
+                      "https://example.com/rooms/101/image1.jpg",
+                      "https://example.com/rooms/101/image2.jpg",
+                      "https://example.com/rooms/101/image3.jpg"
+                    ]
+                  },
+                  "description": "Update room description and images"
+                },
+                "Full update": {
+                  "value": {
+                    "name": "Room 101 (Deluxe)",
+                    "roomTypeId": "550e8400-e29b-41d4-a716-446655440001",
+                    "price": 600000,
+                    "status": "maintenance",
+                    "description": "Deluxe room with city view (Recently renovated)",
+                    "floor": 2,
+                    "area": 35,
+                    "amenities": [
+                      "Air Conditioner",
+                      "TV",
+                      "Refrigerator",
+                      "Water Heater",
+                      "Mini Bar"
                     ],
                     "images": [
                       "https://example.com/rooms/101/image1.jpg",
@@ -555,15 +596,89 @@
                     ],
                     "videos": [
                       "https://example.com/rooms/101/video1.mp4",
-                      "https://example.com/rooms/101/video2.mp4"
+                      "https://example.com/rooms/101/video2.mp4",
+                      "https://example.com/rooms/101/video3.mp4"
                     ]
+                  },
+                  "description": "Update all available fields"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Room updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "550e8400-e29b-41d4-a716-446655440000",
+                    "name": "Room 101 (Deluxe)",
+                    "roomType": {
+                      "id": "550e8400-e29b-41d4-a716-446655440001",
+                      "name": "Deluxe Room",
+                      "description": "Luxury room with city view"
+                    },
+                    "price": 600000,
+                    "status": "maintenance",
+                    "description": "Deluxe room with city view (Recently renovated)",
+                    "floor": 2,
+                    "area": 35,
+                    "amenities": [
+                      "Air Conditioner",
+                      "TV",
+                      "Refrigerator",
+                      "Water Heater",
+                      "Mini Bar"
+                    ],
+                    "images": [
+                      "https://example.com/rooms/101/image1.jpg",
+                      "https://example.com/rooms/101/image2.jpg",
+                      "https://example.com/rooms/101/image3.jpg"
+                    ],
+                    "videos": [
+                      "https://example.com/rooms/101/video1.mp4",
+                      "https://example.com/rooms/101/video2.mp4",
+                      "https://example.com/rooms/101/video3.mp4"
+                    ],
+                    "createdAt": "2024-03-20T10:00:00Z",
+                    "updatedAt": "2024-03-20T11:00:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "price must be a number",
+                      "status must be a valid enum value"
+                    ],
+                    "error": "Bad Request"
                   }
                 }
               }
             }
           },
           "404": {
-            "description": "Room not found"
+            "description": "Room not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Room with ID 550e8400-e29b-41d4-a716-446655440000 not found",
+                    "error": "Not Found"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -1586,7 +1701,7 @@
         ]
       }
     },
-    "/settings": {
+    "/api/settings": {
       "get": {
         "operationId": "SettingsController_getSettings",
         "summary": "Get all settings",
@@ -1603,7 +1718,7 @@
         ]
       }
     },
-    "/settings/building": {
+    "/api/settings/building": {
       "put": {
         "operationId": "SettingsController_updateBuilding",
         "summary": "Update building information",
@@ -1642,7 +1757,7 @@
         ]
       }
     },
-    "/settings/preferences": {
+    "/api/settings/preferences": {
       "put": {
         "operationId": "SettingsController_updatePreferences",
         "summary": "Update system preferences",
@@ -1682,7 +1797,7 @@
         ]
       }
     },
-    "/settings/categories": {
+    "/api/settings/categories": {
       "put": {
         "operationId": "SettingsController_updateCategories",
         "summary": "Update categories",
@@ -1727,7 +1842,7 @@
         ]
       }
     },
-    "/settings/room-types": {
+    "/api/settings/room-types": {
       "post": {
         "operationId": "SettingsController_createRoomType",
         "summary": "Create new room type",
@@ -1779,7 +1894,7 @@
         ]
       }
     },
-    "/settings/room-types/{id}": {
+    "/api/settings/room-types/{id}": {
       "get": {
         "operationId": "SettingsController_findRoomTypeById",
         "summary": "Get room type by id",
@@ -1964,6 +2079,12 @@
         }
       },
       "CreateRoomDto": {
+        "type": "object",
+        "properties": {
+          
+        }
+      },
+      "UpdateRoomDto": {
         "type": "object",
         "properties": {
           

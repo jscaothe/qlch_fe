@@ -34,7 +34,6 @@ const normalizeRoomData = (data: unknown): Room => {
     id: typeof room.id === 'string' ? room.id : '',
     name: typeof room.name === 'string' ? room.name : '',
     floor: typeof room.floor === 'number' ? room.floor : 1,
-    roomNumber: typeof room.roomNumber === 'string' ? room.roomNumber : '',
     area: typeof room.area === 'number' ? room.area : 0,
     price: typeof room.price === 'number' ? room.price : 0,
     status: ['vacant', 'occupied', 'maintenance', 'reserved'].includes(room.status as string) 
@@ -111,16 +110,28 @@ export const roomService = {
   updateRoom: async (id: string, roomData: UpdateRoomDto): Promise<Room> => {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(roomData),
       });
+
+      const data = await response.json();
+
       if (!response.ok) {
+        // Xử lý các trường hợp lỗi cụ thể
+        if (response.status === 400) {
+          throw new Error(Array.isArray(data.message) 
+            ? data.message.join(', ') 
+            : data.message || 'Dữ liệu không hợp lệ');
+        }
+        if (response.status === 404) {
+          throw new Error('Không tìm thấy phòng');
+        }
         throw new Error('Không thể cập nhật thông tin phòng');
       }
-      const data = await response.json();
+
       return normalizeRoomData(data);
     } catch (error) {
       console.error('Lỗi khi cập nhật phòng:', error);

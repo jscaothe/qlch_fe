@@ -24,8 +24,12 @@ const mockRooms: Room[] = [
     area: 25,
     price: 5000000,
     status: "occupied",
+    roomType: "studio",
     amenities: ["TV", "Tủ lạnh", "Điều hòa", "Máy giặt"],
-    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267",
+    images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267"],
+    description: "Phòng studio hiện đại, đầy đủ tiện nghi",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
   },
   {
     id: "2",
@@ -35,9 +39,13 @@ const mockRooms: Room[] = [
     area: 30,
     price: 6000000,
     status: "vacant",
+    roomType: "studio",
     amenities: ["TV", "Tủ lạnh", "Điều hòa", "Máy giặt", "Ban công"],
-    image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
-  },
+    images: ["https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"],
+    description: "Phòng studio rộng rãi với ban công",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  }
 ];
 
 const mockTenants: Tenant[] = [

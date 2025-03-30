@@ -8,7 +8,6 @@ export type Room = {
   id: string;
   name: string;
   floor: number;
-  roomNumber: string;
   area: number;
   price: number;
   status: "vacant" | "occupied" | "maintenance" | "reserved";
@@ -22,13 +21,13 @@ export type Room = {
 
 type RoomCardProps = {
   room: Room;
-  roomTypes: RoomType[];
+  roomTypes?: RoomType[];
   onEdit: (room: Room) => void;
   onDelete: (roomId: string) => void;
   className?: string;
 };
 
-const RoomCard = ({ room, roomTypes, onEdit, onDelete, className }: RoomCardProps) => {
+const RoomCard = ({ room, roomTypes = [], onEdit, onDelete, className }: RoomCardProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
   const formattedPrice = new Intl.NumberFormat("vi-VN", {
@@ -36,7 +35,7 @@ const RoomCard = ({ room, roomTypes, onEdit, onDelete, className }: RoomCardProp
     currency: "VND",
   }).format(room.price);
 
-  const roomTypeName = roomTypes.find(type => type.id === room.roomType)?.name || "Không xác định";
+  const roomTypeName = roomTypes?.find?.(type => type.id === room.roomType)?.name || "Không xác định";
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -109,7 +108,7 @@ const RoomCard = ({ room, roomTypes, onEdit, onDelete, className }: RoomCardProp
         </div>
         <div className="mt-2 space-y-1">
           <p className="text-sm text-gray-600">
-            Tầng {room.floor} · Phòng {room.roomNumber}
+            Tầng {room.floor}
           </p>
           <p className="text-sm text-gray-600">
             {room.area} m² · {formattedPrice}/tháng

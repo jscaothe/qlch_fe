@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Room } from '@/types/room';
 import { roomService } from '@/services/room.service';
-import { RoomTypeService } from '@/services/room-type.service';
+import { RoomTypeService } from '@/services/roomTypeService';
 import { RoomType } from '@/types/room-type';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
@@ -81,12 +81,30 @@ export function RoomList() {
     if (!editingRoom) return;
     
     try {
-      await roomService.updateRoom(editingRoom.id, data);
+      // Chỉ gửi các trường đã thay đổi và loại bỏ các trường không cần thiết
+      const changedFields = Object.entries(data).reduce((acc, [key, value]) => {
+        if (value !== editingRoom[key as keyof Room] && 
+            key !== 'createdAt' && 
+            key !== 'updatedAt') {
+          acc[key] = value;
+        }
+        return acc;
+      }, {} as Partial<Omit<Room, "id">>);
+
+      // Kiểm tra nếu không có trường nào thay đổi
+      if (Object.keys(changedFields).length === 0) {
+        setEditingRoom(null);
+        setIsDialogOpen(false);
+        return;
+      }
+
+      await roomService.updateRoom(editingRoom.id, changedFields);
       toast.success('Cập nhật phòng thành công');
       setIsDialogOpen(false);
+      setEditingRoom(null);
       fetchRooms();
     } catch (error) {
-      toast.error('Không thể cập nhật phòng');
+      toast.error(error instanceof Error ? error.message : 'Không thể cập nhật phòng');
       console.error('Error updating room:', error);
     }
   };
